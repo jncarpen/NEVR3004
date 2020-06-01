@@ -38,45 +38,45 @@ W = W - diag(diag(W));
 
 % Task I: Establishing pattern stability
 
-define the length of the simulation (# of updates).
+%define the length of the simulation (# of updates).
 T = 50;
 
-set an initial time
+%set an initial time
 t = 1;
 
-initialize network by setting the state of each neuron
-to the value it takes in the pattern V.
+%initialize network by setting the state of each neuron
+%to the value it takes in the pattern V.
 S = V;
 
-calculate the overlap/similarity between state of the network, S
-and the stored pattern(s), V.
+% calculate the overlap/similarity between state of the network, S
+% and the stored pattern(s), V.
 m(1) = (S * V')/N;
 
 
-compute field to each neuron that is h_i = sum_j(w_ij * s_j)
-this is the weighted sum of outputs from all other neurons in network
+% compute field to each neuron that is h_i = sum_j(w_ij * s_j)
+% this is the weighted sum of outputs from all other neurons in network
 
 for ti = 2:T % iterate over each time point (why am I starting at 2?)
     for neuron = 1:N % iterate over each neuron in the network 
     h(i) = sum((W(i,:) * S')/50); % 
 
-        compute the *input potential* of a neuron for current time
+%         compute the *input potential* of a neuron for current time
         h(neuron) = (W(neuron,:) * S')/N;
         
-        update the state of that neuron
-        is opposite to the neuron's current state, S(neuron) will *flip*
+%         update the state of that neuron
+%         is opposite to the neuron's current state, S(neuron) will *flip*
         S(neuron) = sign(h(neuron));
         
     end
     
-    measure similarity between current state, S(t) and pattern, V.
+%     measure similarity between current state, S(t) and pattern, V.
     m(ti) = (S * V')/N;
 end
 
-plot m (should remain at 1)
-since the initial network is all 1s, the dynamics of the network
-converged to a fixed point corresponding to the pattern (V) which
-is most similar to the initial state. (?)
+% plot m (should remain at 1)
+% since the initial network is all 1s, the dynamics of the network
+% converged to a fixed point corresponding to the pattern (V) which
+% is most similar to the initial state. (?)
 
 figure()
 plot(m)
@@ -280,7 +280,7 @@ for noise_iter = 1:length(proportionNoise) % loop through all possible proportio
 end
 % store multiple patterns
 
-generate a bunch of patterns and corresponding weight matrices
+% generate a bunch of patterns and corresponding weight matrices
 N = 50;
 number_patterns = 1;
 allPatterns = zeros(number_patterns,N);
@@ -294,7 +294,7 @@ end
 
 % asynchronous non-sequential update (test w/ multiple patterns)
 
-create a vector of proportions
+% create a vector of proportions
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
 total_iterations = 1000;
 figure() % initialize figure
@@ -352,16 +352,16 @@ end
    FUNCTIONS
 %%%%%%%%%%%%%%%%%%%
 
-generate random noise
+% generate random noise
 
 function noisyState = addNoise(stateVector, N, perNoise)
     
-    FUNCTION DESCRIPTION
-    This function will take in a 1xN stateVector, where N is the size of the
-    network, a scalar value perNoise which is the proportion of noise to
-    add to the stateVector. The function will output a 1xN noisyState
-    vector. If perNoise=0, noisyState will just be the original
-    stateVector.
+    % FUNCTION DESCRIPTION
+%     This function will take in a 1xN stateVector, where N is the size of the
+%     network, a scalar value perNoise which is the proportion of noise to
+%     add to the stateVector. The function will output a 1xN noisyState
+%     vector. If perNoise=0, noisyState will just be the original
+%     stateVector.
     
     if perNoise == 0
         noisyState = stateVector;
@@ -383,23 +383,23 @@ end
 % generate pattern and weight matrices
 
 function [patternVec, weightMat] = patternWeight(N, selfConn)
-generate pattern and weight matrices
+% generate pattern and weight matrices
 
-initialize a pattern
+% initialize a pattern
 patternVec = rand(1,N);
 patternVec = 2*(patternVec>0.5)-1;
 
-initialize /synaptic/ weights matrix, W (divide by N?)
+% initialize /synaptic/ weights matrix, W (divide by N?)
 weightMat = (patternVec' * patternVec);
 
 if selfConn == 0
-    set diagonal elements (self-connections) of W to 0.*
+%     set diagonal elements (self-connections) of W to 0.*
     weightMat = weightMat - diag(diag(weightMat));
 elseif selfConn == 1
-    set self-connections = 1
+%     set self-connections = 1
     weightMat(logical(eye(size(weightMat)))) = 1; 
 elseif selfConn == 2
-    set self-connections = -1
+%     set self-connections = -1
     weightMat(logical(eye(size(weightMat)))) = -1;
 else
 end
