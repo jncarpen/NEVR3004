@@ -284,17 +284,17 @@
 
 % generate a bunch of patterns and corresponding weight matrices
 N = 50; % number of nodes in the network (total size)
-number_patterns = 5;
+number_patterns = 10;
 allPatterns = zeros(number_patterns,N); % matrix of all patterns generated
 W = zeros(N,N); % initialize empty weights matrix
 
 for patt = 1:number_patterns 
-    [patternVec, weightMat] = patternWeight(N,0); % use function 'patternWeight' 
-    allPatterns(patt,:) = patternVec; % store current pattern in matrix
+    [patternVec, weightMat] = patternWeight(N,0);
+    allPatterns(patt,:) = patternVec;
     W = W + weightMat; % add weight matrices together
 end
 
-%% asynchronous non-sequential update (test w/ multiple patterns)
+% asynchronous non-sequential update (test w/ multiple patterns)
 
 % create a vector of proportions
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
@@ -340,17 +340,12 @@ for i = 1:total_iterations
     end
 end
 
-%% determine proportion of times that the network converged for different levels of noise
-for col=1:length(minCon(1,:))
-    propConverged(col) = 1 - (sum(isnan(minCon(:,col)))/length(minCon(:,col)));
-end
-
 %% plot convergence histograms
 
 figure()
 for col=1:11
     subplot(3,4,col)
-    histogram(minCon(:,col))
+    histogram(minCon(:,col), 10)
 end
 
 %% plot convergence behavior
@@ -394,7 +389,6 @@ end
 % generate pattern and weight matrices
 
 function [patternVec, weightMat] = patternWeight(N, selfConn)
-% FUNCTION DESCRIPTION
 % generate pattern and weight matrices
 
 % initialize a pattern
