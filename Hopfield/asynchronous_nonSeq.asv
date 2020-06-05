@@ -6,9 +6,9 @@
 
 %% store multiple patterns
 
-P = 5; % number of patterns to loop through
+P = 10; % number of patterns to loop through
 convergence2 = cell(1,P);
-for NP = 1:P % number of patterns loop through a specified number of patterns
+for NP = 1:2:P % loop through every other pattern
     % generate a bunch of patterns and corresponding weight matrices
     N = 50; % number of nodes in the network (total size)
     number_patterns = NP;
@@ -39,7 +39,7 @@ for NP = 1:P % number of patterns loop through a specified number of patterns
             overlap = []; % initialize an overlap matrix
 
 
-                for simLength = 1:500 % total # of iterations *
+                for simLength = 1:00 % total # of iterations *
 
                     neuron = randi([1 50]); % random number from 1-50
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
@@ -49,10 +49,15 @@ for NP = 1:P % number of patterns loop through a specified number of patterns
                 end
 
                 convergence{simulationIter, noise_iter} = [overlap]';
-
-                subplot(3,4,noise_iter)
-                plot(overlap)
-                title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
+                
+                subplot(3,4,noise_iter) % generate subplot for each noise iteration
+                
+                % plot every 20th 
+                if simulationIter == 1 "OR" 20 "OR" 40 "OR" 60 
+                    plot(overlap)
+                    hold on
+                    title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
+                end
         end
     end
     
@@ -89,12 +94,22 @@ end
 
 %% plot proportion noise v. proportion convergence
 
-figure
+figure % new figure
+
+% specify colormap
+colormap(jet(P));
+customColor = jet(P);
+
 for NP=1:P
-    plot(propCon2{1,i});
+    plot(propCon2{1,NP}, 'LineWidth', 2, 'Color', customColor(NP, :));
     hold on
 end
-legend(); % automate this
+
+title("Network Capacity")
+ylabel("Proportion convergence")
+xlabel("Proportion noise")
+lgd = legend('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'); % change this to alpha value
+lgd.Title.String = 'Number of patterns';
 
 %% determine proportion of times that the network converged for different levels of noise
 % for col=1:length(minCon(1,:))
@@ -110,7 +125,6 @@ legend(); % automate this
 % end
 
 %% plot convergence behavior
-
 
 
        

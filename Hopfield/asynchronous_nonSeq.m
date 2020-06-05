@@ -6,9 +6,9 @@
 
 %% store multiple patterns
 
-P = 10; % number of patterns to loop through
+P = 12; % number of patterns to loop through
 convergence2 = cell(1,P);
-for NP = 1:P % number of patterns loop through a specified number of patterns
+for NP = 1:2:P % loop through every other pattern
     % generate a bunch of patterns and corresponding weight matrices
     N = 50; % number of nodes in the network (total size)
     number_patterns = NP;
@@ -26,7 +26,7 @@ for NP = 1:P % number of patterns loop through a specified number of patterns
 
     % create a vector of proportions
     proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
-    total_iterations = 100;
+    total_iterations = 1000;
     figure() % initialize figure
     V = allPatterns(1,:);
     convergence = cell(length(total_iterations),length(proportionNoise));
@@ -49,10 +49,15 @@ for NP = 1:P % number of patterns loop through a specified number of patterns
                 end
 
                 convergence{simulationIter, noise_iter} = [overlap]';
-
-                subplot(3,4,noise_iter)
-                plot(overlap)
-                title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
+                
+                subplot(3,4,noise_iter) % generate subplot for each noise iteration
+                
+                % plot every 20th 
+%                 if simulationIter == 1||20
+                    plot(overlap)
+%                     hold on
+                    title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
+%                 end
         end
     end
     
@@ -65,7 +70,7 @@ end
 minCon2 = cell(1,P);
 propCon2 = cell(1,P);
 
-for NP=1:P
+for NP=1:2:P
     for i = 1:total_iterations
         for j = 1:length(proportionNoise)
             minIter = find(convergence2{1,NP}{i,j}==1, 1); % find the min iteration that the network converged
