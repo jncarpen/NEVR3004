@@ -1,28 +1,37 @@
-%% Asynchronous nonsequential update
-% multiple patterns, variable self-connections, multiple iterations
+%% Asynchronous update:
+% sequential & non-sequential, multiple patterns, variable
+% self-connections, multiple iterations...
 
 % Jo Carpenter
-% Last modified: June 4, 2020
+% Last modified: June 5, 2020
 
 %% store multiple patterns
 
 P = 12; % number of patterns to loop through
-convergence2 = cell(1,P);
+N = 50; % number of nodes in the network (total size)
+convergence2 = cell(1,P); % create convergence array for outer loop
+timeSteps = 500; % number of iterations in the main simulation
+repSeq = repmat(1:N, 1,(timeSteps/N)); % create repeating matrix
+
 for NP = 1:2:P % loop through every other pattern
     % generate a bunch of patterns and corresponding weight matrices
-    N = 50; % number of nodes in the network (total size)
     number_patterns = NP;
     alpha(NP) = number_patterns/N; % calculate alpha value
     allPatterns = zeros(number_patterns,N); % matrix of all patterns generated
     W = zeros(N,N); % initialize empty weights matrix
 
     for patt = 1:number_patterns 
+        
+        % to change nature of self-connections see *patternWeight* function
+        % at end of script ***
+        
         [patternVec, weightMat] = patternWeight(N,0); % use function 'patternWeight' 
         allPatterns(patt,:) = patternVec; % store current pattern in matrix
         W = W + weightMat; % add weight matrices together
+        
     end
 
-    %% asynchronous non-sequential update (test w/ multiple patterns)
+    %% asynchronous update (test w/ multiple patterns)
 
     % create a vector of proportions
     proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
@@ -38,10 +47,14 @@ for NP = 1:2:P % loop through every other pattern
             m(1) = (x * V')/N; % calculate overlap between state & pattern
             overlap = []; % initialize an overlap matrix
 
+                for simLength = 1:timeSteps % total # of iterations *
 
-                for simLength = 1:500 % total # of iterations *
-
-                    neuron = randi([1 50]); % random number from 1-50
+                    % choose between non-sequential or sequential update
+                    % rules (just comment out for now)
+                    
+                    % neuron = randi([1 50]); % random number from 1-50
+                    neuron = repSeq(simLength); % use for asynchronous sequential update
+                 
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
                     x(neuron) = sign(h(neuron)); % update the state of the network
                     m(neuron) = (x*V')/N; % similarity between current state & pattern
@@ -50,14 +63,10 @@ for NP = 1:2:P % loop through every other pattern
 
                 convergence{simulationIter, noise_iter} = [overlap]';
                 
-                subplot(3,4,noise_iter) % generate subplot for each noise iteration
-                
-                % plot every 20th 
-%                 if simulationIter == 1||20
-                    plot(overlap)
-%                     hold on
-                    title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
-%                 end
+%                 subplot(3,4,noise_iter) % generate subplot for each noise iteration
+%                 plot(overlap)
+%                 title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
+
         end
     end
     
