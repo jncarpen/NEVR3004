@@ -7,15 +7,15 @@
 
 %% store multiple patterns
 
-P = 12; % number of patterns to loop through
+P = [1, 2, 3, 6, 7, 10]; % # of patterns to loop through
 N = 50; % number of nodes in the network (total size)
-convergence2 = cell(1,P); % create convergence array for outer loop
+convergence2 = cell(1,length(P)); % create convergence array for outer loop
 timeSteps = 500; % number of iterations in the main simulation
 repSeq = repmat(1:N, 1,(timeSteps/N)); % create repeating matrix
 
-for NP = 1:2:P % loop through every other pattern
+for NP = 1:length(P) % loop through every other pattern
     % generate a bunch of patterns and corresponding weight matrices
-    number_patterns = NP;
+    number_patterns = P(NP);
     alpha(NP) = number_patterns/N; % calculate alpha value
     allPatterns = zeros(number_patterns,N); % matrix of all patterns generated
     W = zeros(N,N); % initialize empty weights matrix
@@ -24,7 +24,6 @@ for NP = 1:2:P % loop through every other pattern
         
         % to change nature of self-connections see *patternWeight* function
         % at end of script ***
-        
         [patternVec, weightMat] = patternWeight(N,2); % use function 'patternWeight' 
         allPatterns(patt,:) = patternVec; % store current pattern in matrix
         W = W + weightMat; % add weight matrices together
@@ -39,6 +38,13 @@ for NP = 1:2:P % loop through every other pattern
     figure() % initialize figure
     V = allPatterns(1,:);
     convergence = cell(length(total_iterations),length(proportionNoise));
+    
+    % if more than one pattern is stored, second pattern = U
+    if number_patterns > 1
+        U = allPatterns(2,:);
+    else
+        U = zeros(1,length(allPatterns(1,:)));
+    end
 
     for simulationIter = 1:total_iterations
         for noise_iter = 1:length(proportionNoise) % loop through all possible proportions of noise
@@ -46,6 +52,8 @@ for NP = 1:2:P % loop through every other pattern
             x = addNoise(S, N, proportionNoise(noise_iter)); % create vector w/ varied amounts of noise
             m(1) = (x * V')/N; % calculate overlap between state & pattern
             overlap = []; % initialize an overlap matrix
+            m2overlap = [];
+            energy = []; % initialize energy matrix
 
                 for simLength = 1:timeSteps % total # of iterations *
 
@@ -58,10 +66,14 @@ for NP = 1:2:P % loop through every other pattern
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
                     x(neuron) = sign(h(neuron)); % update the state of the network
                     m(neuron) = (x*V')/N; % similarity between current state & pattern
+                    m2(neuron) = (x*U')/N; % similarity between current state & another pattern
                     overlap = [overlap, m(neuron)]; %store in overlap matrix
+                    m2overlap = [m2overlap, m2(neuron)];
                 end
 
                 convergence{simulationIter, noise_iter} = [overlap]';
+                m2convergence{simulationIter, noise_iter} = [m2overlap]';
+                
                 
 %                 subplot(3,4,noise_iter) % generate subplot for each noise iteration
 %                 plot(overlap)
@@ -71,15 +83,17 @@ for NP = 1:2:P % loop through every other pattern
     end
     
     convergence2{1,NP} = convergence; % save convergence values for each number of patterns
-    
+    m2convergence2{1,NP} = m2convergence;
 end
+
+
 
 %% convergence
 
-minCon2 = cell(1,P);
-propCon2 = cell(1,P);
+minCon2 = cell(1,length(P));
+propCon2 = cell(1,length(P));
 
-for NP=1:2:P
+for NP=1:length(P)
     for i = 1:total_iterations
         for j = 1:length(proportionNoise)
             minIter = find(convergence2{1,NP}{i,j}==1, 1); % find the min iteration that the network converged
@@ -111,10 +125,8 @@ end
 % end
 
 %% remove gaps from files
-minConData = {minCon2{1,1}, minCon2{1,3}, minCon2{1,5}, minCon2{1,7}, minCon2{1,9}, minCon2{1,11}};
-ConvergenceData = {convergence2{1,1}, convergence2{1,3}, convergence2{1,5}, convergence2{1,7}, convergence2{1,9}, convergence2{1,11}};
-
-
+% minConData = {minCon2{1,1}, minCon2{1,3}, minCon2{1,5}, minCon2{1,7}, minCon2{1,9}, minCon2{1,11}};
+% ConvergenceData = {convergence2{1,1}, convergence2{1,3}, convergence2{1,5}, convergence2{1,7}, convergence2{1,9}, convergence2{1,11}};
 
 %% FUNCTIONS:
 
