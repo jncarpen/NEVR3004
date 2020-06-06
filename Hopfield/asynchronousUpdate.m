@@ -3,7 +3,7 @@
 % self-connections, multiple iterations...
 
 % Jo Carpenter
-% Last modified: June 5, 2020
+% Last modified: June 6, 2020
 
 %% store multiple patterns
 
@@ -25,7 +25,7 @@ for NP = 1:2:P % loop through every other pattern
         % to change nature of self-connections see *patternWeight* function
         % at end of script ***
         
-        [patternVec, weightMat] = patternWeight(N,0); % use function 'patternWeight' 
+        [patternVec, weightMat] = patternWeight(N,2); % use function 'patternWeight' 
         allPatterns(patt,:) = patternVec; % store current pattern in matrix
         W = W + weightMat; % add weight matrices together
         
@@ -52,8 +52,8 @@ for NP = 1:2:P % loop through every other pattern
                     % choose between non-sequential or sequential update
                     % rules (just comment out for now)
                     
-                    % neuron = randi([1 50]); % random number from 1-50
-                    neuron = repSeq(simLength); % use for asynchronous sequential update
+                    neuron = randi([1 50]); % random number from 1-50
+                    % neuron = repSeq(simLength); % use for asynchronous sequential update
                  
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
                     x(neuron) = sign(h(neuron)); % update the state of the network
@@ -101,29 +101,6 @@ for NP=1:2:P
         
 end
 
-%% plot proportion noise v. proportion convergence
-
-figure % new figure
-
-% specify colormap
-colormap(jet(P));
-customColor = jet(P);
-
-for NP=1:P
-    plot(propCon2{1,NP}, 'LineWidth', 2, 'Color', customColor(NP, :));
-    hold on
-end
-
-title("Network Capacity")
-ylabel("Proportion convergence")
-xlabel("Proportion noise")
-lgd = legend('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'); % change this to alpha value
-lgd.Title.String = 'Number of patterns';
-
-%% determine proportion of times that the network converged for different levels of noise
-% for col=1:length(minCon(1,:))
-%     propConverged(col) = 1 - (sum(isnan(minCon(:,col)))/length(minCon(:,col)));
-% end
 
 %% plot convergence histograms
 
@@ -133,12 +110,15 @@ lgd.Title.String = 'Number of patterns';
 %     histogram(minCon(:,col))
 % end
 
-%% 
-%%%%%%%%%%%%%%%%%%%
-  % FUNCTIONS
-%%%%%%%%%%%%%%%%%%%
+%% remove gaps from files
+minConData = {minCon2{1,1}, minCon2{1,3}, minCon2{1,5}, minCon2{1,7}, minCon2{1,9}, minCon2{1,11}};
+ConvergenceData = {convergence2{1,1}, convergence2{1,3}, convergence2{1,5}, convergence2{1,7}, convergence2{1,9}, convergence2{1,11}};
 
-% generate random noise
+
+
+%% FUNCTIONS:
+
+%% 1. noisyState: generate random noise
 
 function noisyState = addNoise(stateVector, N, perNoise)
     
@@ -166,7 +146,7 @@ function noisyState = addNoise(stateVector, N, perNoise)
     end
 end
 
-% generate pattern and weight matrices
+%% 2. patternWeight: generate pattern and weight matrices
 
 function [patternVec, weightMat] = patternWeight(N, selfConn)
 % FUNCTION DESCRIPTION
