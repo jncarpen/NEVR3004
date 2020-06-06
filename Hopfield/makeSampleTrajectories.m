@@ -3,7 +3,7 @@
 % Jo Carpenter
 % Last modified: June 5, 2020
 
-ConvergenceData = m2convergence2;
+% Convergence = ;
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1];
 for pattern = 2
     figure
@@ -13,7 +13,7 @@ for pattern = 2
 
 %         for i=1:50:1000
         for i = 15:20
-            plot(ConvergenceData{1,pattern}{i,noise_iter}, 'LineWidth', 1.25)
+            plot(Convergence{1,pattern}{i,noise_iter}, 'LineWidth', 1.25)
             xlim([1,500]);
             hold on
         end
