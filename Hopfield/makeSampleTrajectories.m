@@ -3,7 +3,7 @@
 % Jo Carpenter
 % Last modified: June 5, 2020
 
-% Convergence = ;
+Convergence = m2Convergence
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1];
 for pattern = 2
     figure
@@ -12,7 +12,7 @@ for pattern = 2
         title(sprintf('%d percent noise',proportionNoise(noise_iter)*100))
 
 %         for i=1:50:1000
-        for i = 15:20
+        for i = 1:10
             plot(Convergence{1,pattern}{i,noise_iter}, 'LineWidth', 1.25)
             xlim([1,500]);
             hold on

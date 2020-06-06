@@ -35,7 +35,7 @@ for NP = 1:length(P) % loop through every other pattern
     % create a vector of proportions
     proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
     total_iterations = 1000;
-    figure() % initialize figure
+    % figure() % initialize figure
     V = allPatterns(1,:);
     convergence = cell(length(total_iterations),length(proportionNoise));
     
@@ -60,8 +60,8 @@ for NP = 1:length(P) % loop through every other pattern
                     % choose between non-sequential or sequential update
                     % rules (just comment out for now)
                     
-                    neuron = randi([1 50]); % random number from 1-50
-                    % neuron = repSeq(simLength); % use for asynchronous sequential update
+                    % neuron = randi([1 50]); % random number from 1-50
+                    neuron = repSeq(simLength); % use for asynchronous sequential update
                  
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
                     x(neuron) = sign(h(neuron)); % update the state of the network
@@ -127,6 +127,15 @@ end
 %% remove gaps from files
 % minConData = {minCon2{1,1}, minCon2{1,3}, minCon2{1,5}, minCon2{1,7}, minCon2{1,9}, minCon2{1,11}};
 % ConvergenceData = {convergence2{1,1}, convergence2{1,3}, convergence2{1,5}, convergence2{1,7}, convergence2{1,9}, convergence2{1,11}};
+
+
+
+%% Rename data for saving
+
+Convergence = convergence2;
+m2Convergence = m2convergence2;
+minCon = minCon2;
+propCon = propCon2;
 
 %% FUNCTIONS:
 
