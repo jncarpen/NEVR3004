@@ -86,8 +86,6 @@ for NP = 1:length(P) % loop through every other pattern
     m2convergence2{1,NP} = m2convergence;
 end
 
-
-
 %% convergence
 
 minCon2 = cell(1,length(P));
@@ -124,21 +122,14 @@ end
 %     histogram(minCon(:,col))
 % end
 
-%% remove gaps from files
-% minConData = {minCon2{1,1}, minCon2{1,3}, minCon2{1,5}, minCon2{1,7}, minCon2{1,9}, minCon2{1,11}};
-% ConvergenceData = {convergence2{1,1}, convergence2{1,3}, convergence2{1,5}, convergence2{1,7}, convergence2{1,9}, convergence2{1,11}};
-
-
-
-%% Rename data for saving
-
+%% Format for dataset
 Convergence = convergence2;
 m2Convergence = m2convergence2;
 minCon = minCon2;
 propCon = propCon2;
 
 %% FUNCTIONS:
-
+dddd
 %% 1. noisyState: generate random noise
 
 function noisyState = addNoise(stateVector, N, perNoise)
