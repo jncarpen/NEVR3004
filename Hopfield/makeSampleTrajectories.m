@@ -3,7 +3,7 @@
 % Jo Carpenter
 % Last modified: June 8, 2020
 
-% Convergence = Convergence;
+Convergence = Convergence_S2;
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
 for pattern = 1
     % Recall: P = [1, 2, 3, 6, 7, 10];

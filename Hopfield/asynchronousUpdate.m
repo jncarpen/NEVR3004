@@ -24,7 +24,7 @@ for NP = 1:length(P) % loop through every other pattern
         
         % to change nature of self-connections see *patternWeight* function
         % at end of script ***
-        [patternVec, weightMat] = patternWeight(N,2); % use function 'patternWeight' 
+        [patternVec, weightMat] = patternWeight(N,0); % use function 'patternWeight' 
         allPatterns(patt,:) = patternVec; % store current pattern in matrix
         W = W + weightMat; % add weight matrices together
         
@@ -60,8 +60,8 @@ for NP = 1:length(P) % loop through every other pattern
                     % choose between non-sequential or sequential update
                     % rules (just comment out for now)
                     
-                    % neuron = randi([1 50]); % random number from 1-50
-                    neuron = repSeq(simLength); % use for asynchronous sequential update
+                    neuron = randi([1 50]); % random number from 1-50
+                    % neuron = repSeq(simLength); % use for asynchronous sequential update
                  
                     h(neuron) = (W(neuron,:) * x')/N; % compute input potential of neuron_i
                     x(neuron) = sign(h(neuron)); % update the state of the network
@@ -98,17 +98,17 @@ for NP=1:length(P)
             if isempty(minIter) % if it never converges
                 minIter = NaN; % set convergence value to NaN
             end
-            minCon(i,j) = minIter; % store it
+            minConn(i,j) = minIter; % store it
         end
     end
     
         % determine proportion of times that the network converged for different levels of noise
-        for col = 1:length(minCon(1,:))
-            propConverged(col) = 1 - (sum(isnan(minCon(:,col)))/length(minCon(:,col)));
+        for col = 1:length(minConn(1,:))
+            propConverged(col) = 1 - (sum(isnan(minConn(:,col)))/length(minConn(:,col)));
         end
         
         % save values for each pattern iteration
-        minCon2{1,NP} = minCon; 
+        minCon2{1,NP} = minConn; 
         propCon2{1,NP} = propConverged;
         
 end
@@ -129,7 +129,6 @@ minCon = minCon2;
 propCon = propCon2;
 
 %% FUNCTIONS:
-dddd
 %% 1. noisyState: generate random noise
 
 function noisyState = addNoise(stateVector, N, perNoise)

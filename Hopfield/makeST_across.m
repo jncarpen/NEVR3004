@@ -3,10 +3,10 @@
 % Jo Carpenter
 % Last modified: June 8, 2020
 
-Convergence = Convergence;
+Convergence = Convergence_NS0;
 proportionNoise = [0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1]; 
 c = lines(20); % set colormap
-for pattern = 2
+for pattern = 5
     % Recall: P = [1, 2, 3, 6, 7, 10];
     figure % intialize new figure
     for noise_iter = 3 % loop through all possible noise values

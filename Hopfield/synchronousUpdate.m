@@ -1,3 +1,5 @@
+% this script is not functional and is under repair
+
 %% Task 2: Retrieving the pattern (Synchronous Update)
 
 % define constants
