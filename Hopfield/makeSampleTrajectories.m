@@ -1,6 +1,4 @@
 % make sample trajectory plots
-% update this later
-% Jo Carpenter
 % Last modified: June 8, 2020
 
 Convergence = Convergence_S2;
@@ -16,7 +14,7 @@ for pattern = 1
         subplot(3,5,count)
 
         for i=1:30:1000
-            plot(Convergence{1,pattern}{i,noise_iter}, 'LineWidth', 1)
+            plot(Convergence{1,pattern}{i,noise_iter}, 'LineWidth', 1.5)
             ax = gca;
             ax.FontSize = 17; 
             yticks([-1 0 1])

@@ -1,4 +1,5 @@
 %% plot proportion noise v. proportion convergence
+% last modified: June 8, 2020
 
 figure % new figure
 propCon = propCon_S0;

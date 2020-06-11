@@ -2,8 +2,8 @@
 % sequential & non-sequential, multiple patterns, variable
 % self-connections, multiple iterations...
 
-% Jo Carpenter
-% Last modified: June 6, 2020
+% 
+% Last modified: June 10, 2020
 
 %% store multiple patterns
 

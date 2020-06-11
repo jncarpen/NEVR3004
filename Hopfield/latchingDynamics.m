@@ -1,5 +1,4 @@
-% Latching Dynamics
-% Jo Carpenter
+%% Check for latching dynamics
 % Last modified: June 8, 2020
 
 N = 50; % network size
